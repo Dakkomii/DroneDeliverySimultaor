@@ -128,7 +128,7 @@ The factory model distributes the task of creating objects to a specific factori
 
 Here is a UML example of how the factory pattern works:
 
-![Factory pattern - source: https://programmer.ink/think/factory-pattern-of-23-design-patterns-java-language.html](imagesMainpage/factory.png)
+![Factory pattern - source: https://programmer.ink/think/factory-pattern-of-23-design-patterns-java-language.html](docs/imagesMainpage/factory.png)
 
 The advantages of using factory pattern is that it can create different objects by overriding the parent class implementation and when an object needs a certain type of functionality, the factories can directly instatiate the object that can offer those functionalities. Another advantage is that it is really useful for creating diferrent objetc at the same time, for example, an airplane object and a pilot object making sure each airplane would have a pilot.
 
@@ -142,7 +142,7 @@ The abstract factory pattern allows programmers to implement problems like the o
 
 Here is a UML example of how the abstract factory pattern works:
 
-![Abstract pattern - source: https://programmer.ink/think/factory-pattern-of-23-design-patterns-java-language.html](imagesMainpage/abstract.png)
+![Abstract pattern - source: https://programmer.ink/think/factory-pattern-of-23-design-patterns-java-language.html](docs/imagesMainpage/abstract.png)
 
 As an advantage of using the abstract pattern is avoiding the tight coupling between the client code and the products, also it allows to follow the open/closed principle because it allows programmers to add new products into the code withouth the need to modify the existing one.
 
@@ -164,22 +164,22 @@ The disadvantage of the composite factory pattern is that it might be hard to pr
 
 Here is a UML representation of the delivery drone project which shows the composite factory pattern:
 
-![Composite Factory pattern](imagesMainpage/UMLShot.png)
+![Composite Factory pattern](docs/imagesMainpage/UMLShot.png)
 
 ### Designing and Implementing New Routes
 In our project, we have drones fly in the air to pick up and deliver a package to a customer. Similarly, a robot does not fly but instead “walks” or essentially uses the roads to deliver a package to a customer. With these modes of transportation in mind, we then can implement different types of paths drones and robots can take to reach the package and the customer. The different paths that we implemented were the beeline, smart, and parabolic path. Since the drone is able to fly, it can beeline, smart, and the parabolic path however, robots cannot fly and so it is only reasonable that it uses the smart path only.
 
 To implement the paths accordingly we used the strategy pattern. The strategy pattern allows the algorithms to vary depending on the clients request. In a strategy pattern there is a context class that makes use of a pure abstract class(Strategy class). Then there are concrete strategy classes that inherit from the pure abstract strategy classes and these concrete strategy classes will involve the implementation of a certain algorithm. To implement the strategy pattern in our project, we created an IStrategy class which is the pure abstract class. In this class, we have a virtual method called SetUp(), and this method essentially sets up all the member variables needed to to implement the different paths. Other pure virtual methods in this class include move(), GetEndofRouteOne(), GetEndofRouteTwo(), HasPackage(), and GetDirection() and these methods provide other information regarding the status of whether endpoints of routes are reached and if the entities has a package or not. Then we implemented the concrete strategy classes and we named them concrete_smart, concrete_beeline, and concrete_parabolic and these three classes inherit from the IStrategy abstract class we made as well. Looking at the concrete_smart.h file as an example,
 
-![concrete_smart.h](imagesMainpage/3081_pic1.png)
-![concrete_smart.h](imagesMainpage/3081_pic2.png)
-![concrete_smart.h](imagesMainpage/3081_pic3.png)
+![concrete_smart.h](docs/imagesMainpage/3081_pic1.png)
+![concrete_smart.h](docs/imagesMainpage/3081_pic2.png)
+![concrete_smart.h](docs/imagesMainpage/3081_pic3.png)
 
 We can see that it has all the pure virtual methods from the IStrategy class with the addition of new methods such as setIndex(int i ), SetHasPackage(bool b), SetDirection and private member variables as seen above. The concrete_beeline class is very similar to the concrete_smart class as it includes all the same methods, but the way the points/directions that are being calculated in the methods such as move differ. For example, in the concrete_smart we would use the A* algorithm to calculate certain points that lead from drone to package and package to customer. Likewise, in the concrete_beeline move method we would calculate points that would lead a straight direct line from drone to package and package to customer. In the concrete_parabolic we would have an algorithm where it would calculate points to produce an upside down U or in a parabola shape path from drone to package and package to customer.
 
 Now that we have had the pure abstract class and its inherited concrete classes that provide the different paths, we utilized these classes by our context class and in this case our context class is the delivery_simulation.cc file. There is a key in the details object that is passed into the CreateEntity function and this key is called “path” where it stores the string variables 'smart', 'beeline', and 'parabolic.' In the ScheduleDelivery method of our delivery_simulaition.cc file, we check the path key values of the Drone object and then assign paths accordingly. The way we assign paths is first we create a IStrategy variable called strategy in our delivery_simulation.h file. We then initialize the strategy variable by assigning an object of either ConcreteSmart, ConcreteBeeline or ConcreteParabolic. We then dynamically cast the strategy variable of either ConcreteSmart, ConcreteBeeline or ConcreteParabolic type and assign it to a variable of type ConcreteSmart, ConcreteBeeline or ConcreteParabolic. Then we use this variable and call its methods such as SetGraph(), to set the graph, smart->SetUp(d->GetPosition(), pack->GetPosition(), cust->GetPosition(), and other corresponding methods to get get the drone to move in that particular path. This demonstration can be seen in the image below which shows how we got the drone to move in the “smart” route by first creating a concreteSmart object and calling its specific methods and would allow the drone to move in the smart path.
 
-![ScheduleDelivery in delivery_simulation.cc](imagesMainpage/3081_pic4.png)
+![ScheduleDelivery in delivery_simulation.cc](docs/imagesMainpage/3081_pic4.png)
 
 Following this picture were two other else if statements that dealt with the beeline and parabolic oaths and the implementation was the same, if not nearly identical as the way we implemented the smart path as shown in the image above.
 
@@ -201,7 +201,7 @@ Our team implemented the observer pattern successfully in our project. We implem
 ### Iteration 3 Feature: Entity Color Decorator
 The radius of each delivery vehicle (drone, robot) is colored to signify the state the vehicle's battery level. If the vehicle's radius is green, its battery has a charge greater than zero. If the vehicle's radius is red, its battery has been depleted. As shown below, we can see that in this particular screenshot taken from the all_features_no_recharge_station.json scene, multiple deliveries are being made and in this case, a robot that has a package dies so it turns red. There is another robot who's battery is not dead so the color of this entity remains green and it also continues to make deliveries.
 
-![Dead and Alive Robots Colored Red and Green Respectively](imagesMainpage/iteration3_pic.png)
+![Dead and Alive Robots Colored Red and Green Respectively](docs/imagesMainpage/iteration3_pic.png)
 
 
 ### Decorator Pattern Discussion
@@ -209,7 +209,7 @@ For the implementation of the entity color decorator feature, the decorator patt
 
 In our implementation, the objects are the drones and robots, both of which will be referred to as delivery vehicles for the sake of clarity.  The wrapper classes are the GreenEntity and RedEntity classes. These classes inherit from the Decorator class, which inherits from EntityBase (see UML for visual of inheritance flow).
 
-![3081 Iteration 3](imagesMainpage/Iteration3UML.png)
+![3081 Iteration 3](docs/imagesMainpage/Iteration3UML.png)
 
 It is important that the inheritance hierarchy is set as such for the decorator pattern to work. When a delivery vehicle’s battery changes state, a new EntityBase object is declared and assigned to a new GreenEntity or RedEntity object (the color is relational to the new state) with the delivery vehicle passed in as the object parameter. This change of state happens at least once and at most twice for each delivery vehicle: first when it leaves its respective factory, changing its radius color from white to green, and second if its battery charge completely depletes, changing its radius color from green to red. Then, the new wrapper object calls its decorate() function, which updates the color of the delivery vehicle.
 
